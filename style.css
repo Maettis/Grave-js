@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+html {
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #1a1a1a;
+}
+
+.grid {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  height: 70vh;
+  aspect-ratio: 1/1;
+  background-color: #242424;
+  border: 2px solid #292d3b;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.square {
+  position: relative;
+  width: calc(50% - 20px - 10px);
+  aspect-ratio: 1/1;
+  background-color: #333333;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  float: left;
+  -webkit-transition: all 50ms;
+  transition: all 50ms;
+  cursor: pointer;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+
+.square:hover {
+  background-color: #242424;
+}
+
+.square img {
+  height: 100px;
+  aspect-ratio: 1/1;
+}
+
+.square .stats {
+  position: absolute;
+  font-size: 20px;
+  color: #fff;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  aspect-ratio: 1/1;
+  width: 30px;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+
+.square .top {
+  top: 10%;
+  left: 10%;
+}
+
+.square .bottom {
+  bottom: 10%;
+  right: 10%;
+}
+
+.used {
+  background-color: #8a505075 !important;
+}
+
+.field {
+  color: #fff;
+}
+/*# sourceMappingURL=style.css.map */
