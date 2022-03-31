@@ -3,6 +3,7 @@ let shieldDiv = document.getElementById("shield");
 let healthDiv = document.getElementById("health");
 let xpDiv = document.getElementById("xp");
 
+let lastDamage = null;
 let lastCard = null;
 let shield = 0;
 let health = 11;
@@ -11,7 +12,7 @@ let xp = 0;
 const cards = [
     {name: "Dragon", img: "img/dragon.png", chance: 0.1},
     {name: "Heal", img: "img/heal.png", chance: 0.3},
-    {name: "Goblin", img: "img/goblin.png", chance: 0.6},
+    {name: "Goblin", img: "img/goblin.png", chance: 0.5},
     {name: "Shield", img: "img/shield.png", chance: 1},
 ]
 
@@ -21,7 +22,7 @@ function randomIntFromInterval(min, max) { // min and max included
 
 updateStats();
 function updateStats() {
-    shieldDiv.innerHTML = 'Shield: ' + shield;
+    shieldDiv.innerHTML = 'Shield: ' + shield + (lastDamage!=null? ' (' + lastDamage + ')' : '');
     healthDiv.innerHTML = 'Health: ' + health;
     xpDiv.innerHTML = 'Xp: ' + xp;
 }
@@ -34,15 +35,26 @@ function resetCards() {
 }
 
 function heal(heal) {
-    health += heal;
-    if (health > 21) {
-        health = 11;
-    }
+    if (lastCard != null)
+        if (lastCard.name == "Heal") return
+            health += heal;
+    if (health > 21)
+        health = 21
     updateStats();
 }
 
-function setShield(shield) {
-    this.shield = shield;
+function damage(damage) {
+    if (lastDamage <= damage && lastDamage != null) {
+        lastDamage = damage;
+        health -= damage;
+    } else {
+        lastDamage = damage;
+        damage = damage - shield;
+        if (damage < 0) {
+            damage = 0;
+        }
+        health -= damage;
+    }
     updateStats();
 }
 
@@ -68,23 +80,31 @@ function nextRound() {
         } else if (card.name === "Heal") {
             stat = randomIntFromInterval(2, 11);
         } else if (card.name === "Goblin") {
-            stat = randomIntFromInterval(4, 10);
+            stat = randomIntFromInterval(2, 6);
         } else if (card.name === "Dragon") {
             stat = "21";
         }
         statFields.forEach(function(statField) {
             statField.innerHTML = stat;
         });
+        square.addEventListener("click", function() {
+            // change color
+            if (square.classList.contains("used"))
+                return
+            square.classList.add("used");
+            if (card.name === "Shield") {
+                shield = stat;
+                lastDamage = null;
+                updateStats();
+            } else if (card.name === "Heal") {
+                heal(stat);
+            } else if (card.name === "Goblin" || card.name === "Dragon") {
+                damage(stat);
+            }
+            lastCard = card;
+        });
     });
 }
-
-// foreach squares
-squares.forEach(function(square) {
-    square.addEventListener("click", function() {
-        // change color
-        square.classList.add("used");
-    });
-});
 
 reset();
 function reset() {
