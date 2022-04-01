@@ -22,44 +22,62 @@ function randomIntFromInterval(min, max) { // min and max included
 
 updateStats();
 function updateStats() {
-    shieldDiv.innerHTML = 'Shield: ' + shield + (lastDamage!=null? ' (' + lastDamage + ')' : '');
+    shieldDiv.innerHTML = 'Shield: ' + shield + '' + (lastDamage!=null? ' (' + lastDamage + ')' : '');
     healthDiv.innerHTML = 'Health: ' + health;
     xpDiv.innerHTML = 'Xp: ' + xp;
+    if (health <= 0) {
+        alert("You lost!");
+        reset();
+    }
 }
 
 function resetCards() {
     // remove used class
+    console.log("Reset cards");
     squares.forEach(function(square) {
-        square.classList.remove("used");
+        square.classList.remove("Dragon", "Heal", "Goblin", "Shield", "used");
+        square.replaceWith(square.cloneNode(true));
     });
 }
 
 function heal(heal) {
     if (lastCard != null)
-        if (lastCard.name == "Heal") return
-            health += heal;
+        if (lastCard.name == "Heal") 
+            return
+    health = health + heal;
     if (health > 21)
         health = 21
     updateStats();
 }
 
 function damage(damage) {
-    if (lastDamage <= damage && lastDamage != null) {
-        lastDamage = damage;
-        health -= damage;
-    } else {
-        lastDamage = damage;
-        damage = damage - shield;
-        if (damage < 0) {
-            damage = 0;
+    let db = damage
+    if (shield > 0) {
+        if (lastDamage == null) {
+            console.log("Shield is active and LastDamage is null");
+            damage = damage - shield;
+            if (damage < 0)
+                damage = 0;
+        } else {
+            console.log("Shield is active and LastDamage is not null", damage, lastDamage);
+            if (damage <= lastDamage)  {
+                console.log("Damage is less than lastDamage");
+                damage = damage - shield;
+                if (damage < 0)
+                    damage = 0;
+            }
         }
-        health -= damage;
     }
+    console.log(damage);
+    if (shield > 0)
+        lastDamage = db;
+    health = health - damage;
     updateStats();
 }
 
 function nextRound() {
     //foreach square
+    squares = document.querySelectorAll(".square");
     squares.forEach(function(square) {
         let random = Math.random();
         // Select random card from cards with the given chance
@@ -89,6 +107,7 @@ function nextRound() {
         });
         square.addEventListener("click", function() {
             // change color
+            console.log(card.name)
             if (square.classList.contains("used"))
                 return
             square.classList.add("used");
@@ -99,9 +118,15 @@ function nextRound() {
             } else if (card.name === "Heal") {
                 heal(stat);
             } else if (card.name === "Goblin" || card.name === "Dragon") {
+                console.log("Card is Goblin or Dragon");
                 damage(stat);
             }
             lastCard = card;
+            let usedSquares = document.querySelectorAll(".used");
+            if (usedSquares.length === squares.length) {
+                // Wait 0.2 seconds and reset
+                setTimeout(reset, 200);
+            }
         });
     });
 }
