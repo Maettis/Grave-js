@@ -22,9 +22,9 @@ function randomIntFromInterval(min, max) { // min and max included
 
 updateStats();
 function updateStats() {
-    shieldDiv.innerHTML = 'Shield: ' + shield + '' + (lastDamage!=null? ' (' + lastDamage + ')' : '');
-    healthDiv.innerHTML = 'Health: ' + health;
-    xpDiv.innerHTML = 'Xp: ' + xp;
+    shieldDiv.innerHTML = 'Shield: <div>' + shield + '' + (lastDamage!=null? ' (' + lastDamage + ')</div>' : '</div>');
+    healthDiv.innerHTML = 'Health: <div>' + health + '</div>';
+    xpDiv.innerHTML = 'Xp: <div>' + xp + '</div>';
     if (health <= 0) {
         alert("You lost!");
         reset();

@@ -24,6 +24,7 @@ html {
   width: calc(50% - 20px - 10px);
   aspect-ratio: 1/1;
   background-color: #333333;
+  overflow: hidden;
   border-radius: 10px;
   padding: 10px;
   margin: 5px;
@@ -75,5 +76,26 @@ html {
 
 .field {
   color: #fff;
+  background-color: #242424;
+  padding: 10px 15px;
+  margin: 5px 10px;
+  border: 2px solid #292d3b;
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100px;
+}
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: translate(-100%, 0);
+          transform: translate(-100%, 0);
+  margin: -7px 0;
 }
 /*# sourceMappingURL=style.css.map */
